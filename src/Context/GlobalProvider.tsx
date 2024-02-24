@@ -11,7 +11,7 @@ export const useGlobalContext = () => {
   return context;
 };
 
-export const GlobalProvider: React.FC = ({ children }) => {
+export const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [pokemonName, setPokemonName] = useState<string>("pikachu");
 

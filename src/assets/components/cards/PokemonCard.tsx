@@ -1,4 +1,3 @@
-import React, { useContext } from "react";
 
 //interface
 import { PokemonDetails } from "../../../Interfaces/PokemonInterfaces";

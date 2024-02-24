@@ -165,11 +165,14 @@ const Home: React.FC = () => {
                     pokemon.sprites.other["official-artwork"].front_default ||
                     "https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png"
                   }
+                  sprites={pokemon.sprites.other["official-artwork"].front_default}
                   name={pokemon.name}
                   types={pokemon.types}
                   abilities={pokemon.abilities}
                   height={pokemon.height}
                   weight={pokemon.weight}
+                  location_area_encounters={pokemon.location_area_encounters}
+                  location_area={pokemon.location_area}
                 />
               ))
             ) : (
@@ -242,7 +245,7 @@ const Home: React.FC = () => {
 
             <div className="w-full h-full flex justify-center items-center">
               {selectedPokemon ? (
-                <SideDrawer selectedPokemon={selectedPokemon} />
+                <SideDrawer selectedPokemon={selectedPokemon} /> // Pass the selectedPokemon prop to the SideDrawer component
               ) : (
                 <p>No pokemon selected</p>
               )}

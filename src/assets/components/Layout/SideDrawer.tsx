@@ -4,8 +4,12 @@ import axios from "axios";
 //context
 import { useGlobalContext } from "../../../Context/GlobalProvider";
 
-const SideDrawer: React.FC = ({ selectedPokemon }) => {
-  const [locations, setLocations] = useState<string[]>([]);
+//interfaces
+import { PokemonDetails, SideDrawerProps } from "../../../Interfaces/PokemonInterfaces";
+
+
+const SideDrawer: React.FC<SideDrawerProps> = ({ selectedPokemon }) => {
+  const [locations, setLocations] = useState<PokemonDetails[]>([]);
 
   const { drawer } = useGlobalContext();
 

@@ -10,7 +10,6 @@ import { motion } from "framer-motion";
 import {
   PokemonDetails,
   PokemonListResponse,
-  pokemonType,
 } from "../../../Interfaces/PokemonInterfaces";
 
 //components
@@ -26,10 +25,6 @@ const FilteredPoke: React.FC = () => {
   const { drawer, closeDrawer, pokemonName } = useGlobalContext();
   const [pokemons, setPokemons] = useState<PokemonDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [nextUrl, setNextUrl] = useState<string>(
-    `https://pokeapi.co/api/v2/pokemon?offset=0&limit=30`
-  );
-
   const { pokemonType } = useParams();
 
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails>();
@@ -89,11 +84,14 @@ const FilteredPoke: React.FC = () => {
                   pokemon.sprites.other["official-artwork"].front_default ||
                   "https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png"
                 }
+                sprites={pokemon.sprites}
                 name={pokemon.name}
                 types={pokemon.types}
                 abilities={pokemon.abilities}
                 height={pokemon.height}
                 weight={pokemon.weight}
+                location_area_encounters={pokemon.location_area_encounters}
+                location_area={pokemon.location_area}
               />
             ))
           ) : (

@@ -10,8 +10,7 @@ const Charts: React.FC = () => {
   const barChartRef = useRef<HTMLDivElement>(null);
   const pieChartRef = useRef<HTMLDivElement>(null);
   const [data, setData] = useState<PokemonType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+
   const url = "https://pokeapi.co/api/v2/type/";
 
   useEffect(() => {
@@ -22,7 +21,7 @@ const Charts: React.FC = () => {
     if (data.length > 0 && barChartRef.current) {
       const myBarChart = echarts.init(barChartRef.current);
 
-      const barOptions: echarts.EChartOption = {
+      const barOptions: echarts.EChartsOption = {
         xAxis: {
           type: 'category',
           data: data.map(item => item.name),
@@ -34,9 +33,7 @@ const Charts: React.FC = () => {
           type: 'bar',
           data: data.map(item => item.pokemon.length),
           itemStyle: {
-            emphasis: {
-              color: 'skyblue',
-            },
+            color: 'skyblue',
           },
         }]
       };
@@ -56,7 +53,7 @@ const Charts: React.FC = () => {
     if (data.length > 0 && pieChartRef.current) {
       const myPieChart = echarts.init(pieChartRef.current);
 
-      const pieOptions: echarts.EChartOption = {
+      const pieOptions: echarts.EChartsOption = {
         series: [
           {
             type: 'pie',
@@ -94,10 +91,9 @@ const Charts: React.FC = () => {
         return { name: type.name, pokemon: typeResponse.data.pokemon };
       }));
       setData(typesData);
-      setLoading(false);
+
     } catch (error) {
-      setError("There was an error");
-      setLoading(false);
+      console.error("Error fetching data:", error);
     }
   };
   return (
