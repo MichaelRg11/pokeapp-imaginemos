@@ -28,7 +28,7 @@ npm install
 ```
 Para iniciar el servidor de desarrollo y ejecutar la aplicación localmente, use el siguiente comando:
 ```bash
-npm run declarativa
+npm run dev
 ```
 Si necesita compilar el proyecto para implementación en producción, ejecute el siguiente comando:
 
