@@ -92,6 +92,7 @@ const FilteredPoke: React.FC = () => {
                 weight={pokemon.weight}
                 location_area_encounters={pokemon.location_area_encounters}
                 location_area={pokemon.location_area}
+                loading={loading}
               />
             ))
           ) : (

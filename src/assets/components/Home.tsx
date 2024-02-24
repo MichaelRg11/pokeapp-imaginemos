@@ -33,17 +33,19 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (pokemonType === "all") {
+      console.log(nextUrl);
+      setPokemons([]);
       loadAllPokemons();
-      if (pokemons.length > 30) {
-        window.location.reload();
-      }
     } else {
       loadPokemonsFiltered();
     }
   }, [pokemonType]);
 
   useEffect(() => {
+    if (pokemonType === "all") {
     window.addEventListener("scroll", handleScroll);
+  }
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
 
@@ -59,7 +61,11 @@ const Home: React.FC = () => {
     ) {
       return;
     }
-    loadAllPokemons();
+    if (pokemonType !== "all") {
+      loadPokemonsFiltered();
+    }else{
+      loadAllPokemons();
+    }
   };
 
   const fetchPokemon = async () => {
@@ -94,6 +100,7 @@ const Home: React.FC = () => {
 
   const loadPokemonsFiltered = async () => {
     setLoading(true);
+    setNextUrl(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=30`);
     try {
       const response = await axios.get<PokemonListResponse>(
         `https://pokeapi.co/api/v2/type/${pokemonType}`
@@ -173,6 +180,7 @@ const Home: React.FC = () => {
                   weight={pokemon.weight}
                   location_area_encounters={pokemon.location_area_encounters}
                   location_area={pokemon.location_area}
+                  loading={loading}
                 />
               ))
             ) : (
@@ -184,7 +192,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* loading */}
-        <motion.div
+        {/* <motion.div
           animate={{ y: loading ? 0 : "100%" }}
           transition={{ duration: 0.3 }} // Ajusta la duración según si está cargando o no
           className={`w-full fixed bottom-0 left-0 flex justify-center items-center py-7 bg-red-pantone ${
@@ -210,7 +218,7 @@ const Home: React.FC = () => {
             </svg>
             <span className="sr-only">Loading...</span>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* left Side drawer */}
         <motion.div
@@ -245,7 +253,7 @@ const Home: React.FC = () => {
 
             <div className="w-full h-full flex justify-center items-center">
               {selectedPokemon ? (
-                <SideDrawer selectedPokemon={selectedPokemon} /> // Pass the selectedPokemon prop to the SideDrawer component
+                <SideDrawer selectedPokemon={selectedPokemon} />
               ) : (
                 <p>No pokemon selected</p>
               )}

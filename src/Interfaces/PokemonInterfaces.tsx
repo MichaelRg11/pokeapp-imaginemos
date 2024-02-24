@@ -21,6 +21,7 @@ export interface pokemonType {
 }
 
 export interface PokemonDetails {
+  loading: boolean;
   sprites: {
     other: {
       "official-artwork": {
@@ -41,5 +42,5 @@ export interface PokemonDetails {
 }
 
 export interface SideDrawerProps {
-  selectedPokemon: PokemonDetails; // Definir la prop selectedPokemon y su tipo
+  selectedPokemon: PokemonDetails; 
 }
