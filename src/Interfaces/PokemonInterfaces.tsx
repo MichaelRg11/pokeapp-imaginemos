@@ -21,7 +21,6 @@ export interface pokemonType {
 }
 
 export interface PokemonDetails {
-  loading: boolean;
   sprites: {
     other: {
       "official-artwork": {

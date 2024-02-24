@@ -24,16 +24,15 @@ const Home: React.FC = () => {
     `https://pokeapi.co/api/v2/pokemon?offset=0&limit=30`
   );
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails>();
-
   const [pokemonType, setPokemonType] = useState<string>("all");
 
+  //handle type change
   const handleTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPokemonType(e.target.value);
   };
 
   useEffect(() => {
     if (pokemonType === "all") {
-      console.log(nextUrl);
       setPokemons([]);
       loadAllPokemons();
     } else {
@@ -43,8 +42,8 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     if (pokemonType === "all") {
-    window.addEventListener("scroll", handleScroll);
-  }
+      window.addEventListener("scroll", handleScroll);
+    }
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [loading]);
@@ -53,21 +52,31 @@ const Home: React.FC = () => {
     fetchPokemon();
   }, [pokemonName]);
 
+  //handle scroll
   const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight ||
-      loading
-    ) {
-      return;
-    }
-    if (pokemonType !== "all") {
-      loadPokemonsFiltered();
-    }else{
-      loadAllPokemons();
+    // Umbral: por ejemplo, 100 píxeles antes del final de la página
+    const threshold = 100;
+
+    // Calculamos la distancia restante para llegar al final de la página
+    const distanceToBottom =
+      document.documentElement.offsetHeight -
+      (window.innerHeight + window.pageYOffset);
+
+    // Si la distancia restante es menor o igual al umbral
+    if (distanceToBottom <= threshold) {
+      // Cargamos más pokemons
+      if (pokemonType !== "all") {
+        loadPokemonsFiltered();
+      } else {
+        loadAllPokemons();
+      }
+
+      // Eliminamos el evento de desplazamiento una vez que se activa
+      window.removeEventListener("scroll", handleScroll);
     }
   };
 
+  //fetch pokemon
   const fetchPokemon = async () => {
     try {
       const response = await axios.get<PokemonDetails>(
@@ -79,6 +88,7 @@ const Home: React.FC = () => {
     }
   };
 
+  //load all pokemons
   const loadAllPokemons = async () => {
     setLoading(true);
     try {
@@ -98,6 +108,7 @@ const Home: React.FC = () => {
     }
   };
 
+  //load pokemons filtered
   const loadPokemonsFiltered = async () => {
     setLoading(true);
     setNextUrl(`https://pokeapi.co/api/v2/pokemon?offset=0&limit=30`);
@@ -161,8 +172,8 @@ const Home: React.FC = () => {
               <option value="fairy">Fairy</option>
             </select>
           </div>
-          {/* cards */}
 
+          {/* cards */}
           <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
             {pokemons.length > 0 ? (
               pokemons.map((pokemon: any, index: number) => (
@@ -172,7 +183,9 @@ const Home: React.FC = () => {
                     pokemon.sprites.other["official-artwork"].front_default ||
                     "https://cdn.pixabay.com/photo/2017/01/25/17/35/picture-2008484_1280.png"
                   }
-                  sprites={pokemon.sprites.other["official-artwork"].front_default}
+                  sprites={
+                    pokemon.sprites.other["official-artwork"].front_default
+                  }
                   name={pokemon.name}
                   types={pokemon.types}
                   abilities={pokemon.abilities}
@@ -180,7 +193,6 @@ const Home: React.FC = () => {
                   weight={pokemon.weight}
                   location_area_encounters={pokemon.location_area_encounters}
                   location_area={pokemon.location_area}
-                  loading={loading}
                 />
               ))
             ) : (
@@ -192,7 +204,7 @@ const Home: React.FC = () => {
         </div>
 
         {/* loading */}
-        {/* <motion.div
+        <motion.div
           animate={{ y: loading ? 0 : "100%" }}
           transition={{ duration: 0.3 }} // Ajusta la duración según si está cargando o no
           className={`w-full fixed bottom-0 left-0 flex justify-center items-center py-7 bg-red-pantone ${
@@ -218,7 +230,7 @@ const Home: React.FC = () => {
             </svg>
             <span className="sr-only">Loading...</span>
           </div>
-        </motion.div> */}
+        </motion.div>
 
         {/* left Side drawer */}
         <motion.div

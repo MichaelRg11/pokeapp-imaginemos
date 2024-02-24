@@ -15,6 +15,7 @@ import {
 //components
 import PokemonCard from "../../components/cards/PokemonCard";
 import SideDrawer from "../../components/Layout/SideDrawer";
+
 //import mainContext
 import { useGlobalContext } from "../../../Context/GlobalProvider";
 
@@ -26,9 +27,9 @@ const FilteredPoke: React.FC = () => {
   const [pokemons, setPokemons] = useState<PokemonDetails[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const { pokemonType } = useParams();
-
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails>();
 
+  //load pokemons filtered
   const loadPokemonsFiltered = async () => {
     setLoading(true);
     try {
@@ -51,6 +52,7 @@ const FilteredPoke: React.FC = () => {
     }
   };
 
+  //fetch pokemon
   const fetchPokemon = async () => {
     try {
       const response = await axios.get<PokemonDetails>(
@@ -62,9 +64,9 @@ const FilteredPoke: React.FC = () => {
     }
   };
 
-    useEffect(() => {
-        fetchPokemon();
-    }, [pokemonName]);
+  useEffect(() => {
+    fetchPokemon();
+  }, [pokemonName]);
 
   useEffect(() => {
     loadPokemonsFiltered();
@@ -92,12 +94,11 @@ const FilteredPoke: React.FC = () => {
                 weight={pokemon.weight}
                 location_area_encounters={pokemon.location_area_encounters}
                 location_area={pokemon.location_area}
-                loading={loading}
               />
             ))
           ) : (
             <div className="w-full h-full flex justify-center items-center">
-                <h2 className="text-3xl font-bold">No pokemons found</h2>
+              <h2 className="text-3xl font-bold">No pokemons found</h2>
             </div>
           )}
         </div>
@@ -134,44 +135,44 @@ const FilteredPoke: React.FC = () => {
 
       {/* left Side drawer */}
       <motion.div
-          animate={{ x: drawer ? 0 : "-100%" }}
-          transition={{ duration: 0.3 }}
-          className={`max-w-screen-md w-full h-full fixed top-0 left-0 bg-white z-50 shadow-lg ${
-            drawer ? "" : "hidden"
-          }`}
-        >
-          <div className="w-full h-full flex flex-col justify-end items-start relative">
-            <div className="absolute top-0 right-0">
-              <button
-                onClick={() => closeDrawer()}
-                className="w-10 h-10 flex justify-center items-center"
+        animate={{ x: drawer ? 0 : "-100%" }}
+        transition={{ duration: 0.3 }}
+        className={`max-w-screen-md w-full h-full fixed top-0 left-0 bg-white z-50 shadow-lg ${
+          drawer ? "" : "hidden"
+        }`}
+      >
+        <div className="w-full h-full flex flex-col justify-end items-start relative">
+          <div className="absolute top-0 right-0">
+            <button
+              onClick={() => closeDrawer()}
+              className="w-10 h-10 flex justify-center items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            <div className="w-full h-full flex justify-center items-center">
-              {selectedPokemon ? (
-                <SideDrawer selectedPokemon={selectedPokemon} />
-              ) : (
-                <p>No pokemon selected</p>
-              )}
-            </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
-        </motion.div>
+
+          <div className="w-full h-full flex justify-center items-center">
+            {selectedPokemon ? (
+              <SideDrawer selectedPokemon={selectedPokemon} />
+            ) : (
+              <p>No pokemon selected</p>
+            )}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 };

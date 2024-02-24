@@ -5,14 +5,19 @@ import axios from "axios";
 import { useGlobalContext } from "../../../Context/GlobalProvider";
 
 //interfaces
-import { PokemonDetails, SideDrawerProps } from "../../../Interfaces/PokemonInterfaces";
+import {
+  PokemonDetails,
+  SideDrawerProps,
+} from "../../../Interfaces/PokemonInterfaces";
 
+//components
+import PokemonCard from "../../components/cards/PokemonCard";
 
 const SideDrawer: React.FC<SideDrawerProps> = ({ selectedPokemon }) => {
   const [locations, setLocations] = useState<PokemonDetails[]>([]);
-
   const { drawer } = useGlobalContext();
 
+  //fetch locations
   const fetchLocations = async () => {
     try {
       const response = await axios.get(
@@ -31,72 +36,39 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ selectedPokemon }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center h-full">
-        <img
-          src={selectedPokemon.sprites.other["official-artwork"].front_default}
-          alt={selectedPokemon.name}
-          className="w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mb-4"
-        />
+      <div className="flex flex-col items-center justify-center h-full">
 
-        <h2 className="text-4xl font-bold mb-2 w-full">
-          {selectedPokemon.name}
-        </h2>
-
-        <ul className="text-lg font-bold w-full">
-          <li>
-            <span className="font-bold">Height: </span>
-            <span className="font-normal">{selectedPokemon.height}</span>
-          </li>
-          <li>
-            <span className="font-bold">Weight: </span>
-            <span className="font-normal">{selectedPokemon.weight}</span>
-          </li>
-          <li>
-            <span className="font-bold mr-1">Abilities:</span>
-            {selectedPokemon.abilities.map((ability, index) => (
-              <span className="font-normal" key={index}>
-                {index > 0 && ", "}
-                {ability.ability.name}
-              </span>
-            ))}
-          </li>
-        </ul>
-
-        <div className="w-full flex flex-col justify-start items-start">
-          <h3 className="text-2xl font-bold my-4">Types</h3>
-          <ul className="flex">
-            {selectedPokemon.types.map((type, index) => (
-              <li
-                className="p-1 px-2 mr-2 rounded-md min-w-10 w-20 max-w-fit text-xs text-center font-bold shadow-sm"
-                style={{
-                  backgroundColor: `var(--${type.type.name})`,
-                }}
-                key={index}
-              >
-                <span className="mix-blend-normal text-white">
-                  {type.type.name}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="w-full h-full maxw-96 flex flex-col overflow-x-auto">
-          <h3 className="text-2xl font-bold my-4">Locations</h3>
-          <ul className="text-lg font-bold whitespace-nowrap">
-            {locations.length > 0 ? (
-              locations.map((location, index) => (
-                <li key={index}>
-                  <span className="font-normal">
-                    {location.location_area.name}
-                  </span>
-                  {index < locations.length - 1 && <span>, </span>}
-                </li>
-              ))
-            ) : (
-              <li>No tiene una localidad especifica</li>
-            )}
-          </ul>
+        <div className="w-96 h-40">
+          <PokemonCard
+            image={
+              selectedPokemon.sprites.other["official-artwork"].front_default
+            }
+            sprites={selectedPokemon.sprites}
+            name={selectedPokemon.name}
+            types={selectedPokemon.types}
+            abilities={selectedPokemon.abilities}
+            height={selectedPokemon.height}
+            weight={selectedPokemon.weight}
+            location_area_encounters={selectedPokemon.location_area_encounters}
+            location_area={selectedPokemon.location_area}
+          />
+          <div className="w-full h-full maxw-96 flex flex-col overflow-x-auto">
+            <h3 className="text-2xl font-bold my-4">Locations</h3>
+            <ul className="text-lg font-bold whitespace-nowrap">
+              {locations.length > 0 ? (
+                locations.map((location, index) => (
+                  <li key={index}>
+                    <span className="font-normal">
+                      {location.location_area.name}
+                    </span>
+                    {index < locations.length - 1 && <span>, </span>}
+                  </li>
+                ))
+              ) : (
+                <li>No tiene una localidad especifica</li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </>

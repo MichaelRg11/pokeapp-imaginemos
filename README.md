@@ -40,4 +40,4 @@ npm runn build
 Tailwind CSS se utiliza para el estilo en este proyecto.
 
 ### Vista previa del sitio en vivo
-Para obtener una vista previa en vivo de la aplicación, visite [aqui](https://josecito.me).
+Para obtener una vista previa en vivo de la aplicación, visite [aqui](https://65da320f0acc2c25ef1f52ff--frolicking-faun-f146de.netlify.app/).
